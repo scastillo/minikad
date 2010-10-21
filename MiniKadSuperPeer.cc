@@ -14,7 +14,10 @@ void MiniKadSuperPeer::initializeOverlay(int stage)
     if(stage != MIN_STAGE_OVERLAY) return;
 
     thisNode.setKey( OverlayKey::random() );
-    WATCH( "Initializing SuperPeer" );
+
+    // GlobalNodeListAccess().get()->registerPeer( thisNode );
+
+    EV << "\n\n\n\n\n Initializing SuperPeer " << GlobalNodeListAccess().get() -> getNumNodes() << "\n\n\n\n\n";
 }
 
 void MiniKadSuperPeer::handleTimerEvent(cMessage* msg)

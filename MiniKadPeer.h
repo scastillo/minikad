@@ -4,6 +4,7 @@
 #include <omnetpp.h>
 #include <NodeHandle.h>
 #include "BaseOverlay.h"
+#include <PeerInfo.h>
 
 class MiniKadPeer : public BaseOverlay
 {

@@ -7,7 +7,6 @@ simple MiniKadPeer extends BaseOverlay
 {
     parameters:
         @class(MiniKadPeer);
-//        string identifier;
 }
 
 module OverlayMiniKadPeer like IOverlay
