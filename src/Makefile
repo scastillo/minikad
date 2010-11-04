@@ -28,7 +28,7 @@ PROJECTRELATIVE_PATH = /src
 O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 
 # Object files for local .cc and .msg files
-OBJS =
+OBJS = $O/Cloud.o $O/Peer.o $O/SuperPeer.o
 
 # Message files
 MSGFILES =
@@ -101,4 +101,9 @@ depend:
 	$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES)  ./*.cc
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
-
+$O/Cloud.o: Cloud.cc \
+  ./Cloud.h
+$O/Peer.o: Peer.cc \
+  ./Peer.h
+$O/SuperPeer.o: SuperPeer.cc \
+  ./SuperPeer.h
