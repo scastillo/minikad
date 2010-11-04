@@ -1,0 +1,3 @@
+package minikad;
+
+@license(LGPL);
