@@ -15,6 +15,10 @@
 
 simple Peer
 {
+   parameters:
+      int id;
+      string superPeers; //List with ids of superpeers
+      int flujo= default(0);
     gates:
         inout gate;
 }

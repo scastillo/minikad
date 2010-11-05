@@ -18,15 +18,25 @@
 
 
 #include <omnetpp.h>
+#include "peerRegister_m.h"
+#include <vector>
+#include <cstringtokenizer.h>
+#include "kinds.h"
 
 using namespace std;
+
+const int TYPE=2;
 
 class Peer : public cSimpleModule {
 public:
 	Peer();
 	virtual ~Peer();
-        void initialize();
-	void handleMessage(cMessage *message);
+        virtual void initialize(int stage);
+        virtual int numInitStages() const;
+	virtual void handleMessage(cMessage *message);
+        void setSuperPeers();
+        int count;
+        vector <int> superPeers;
 };
 
 #endif /* PEER_H_ */

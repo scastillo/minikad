@@ -15,6 +15,8 @@
 
 simple SuperPeer
 {
+    parameters:
+      int id;
     gates:
         inout gate;
 }

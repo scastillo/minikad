@@ -17,15 +17,20 @@
 #define SUPERPEER_H_
 
 #include <omnetpp.h>
+#include "peerRegister_m.h"
+#include "kinds.h"
 
 using namespace std;
+
+const int TYPE=1;
 
 class SuperPeer : public cSimpleModule {
 public:
 	SuperPeer();
 	virtual ~SuperPeer();
-        void initialize();
-	void handleMessage(cMessage *message);
+        virtual void initialize(int stage);
+        virtual int numInitStages() const;
+	virtual void handleMessage(cMessage *message);
 };
 
 #endif /* SUPERPEER_H_ */

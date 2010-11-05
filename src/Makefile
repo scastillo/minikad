@@ -28,10 +28,11 @@ PROJECTRELATIVE_PATH = /src
 O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 
 # Object files for local .cc and .msg files
-OBJS = $O/Cloud.o $O/Peer.o $O/SuperPeer.o
+OBJS = $O/Cloud.o $O/Peer.o $O/SuperPeer.o $O/peerRegister_m.o
 
 # Message files
-MSGFILES =
+MSGFILES = \
+    peerRegister.msg
 
 #------------------------------------------------------------------------------
 
@@ -102,8 +103,16 @@ depend:
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 $O/Cloud.o: Cloud.cc \
-  ./Cloud.h
+  ./kinds.h \
+  ./Cloud.h \
+  ./peerRegister_m.h
 $O/Peer.o: Peer.cc \
+  ./kinds.h \
+  ./peerRegister_m.h \
   ./Peer.h
 $O/SuperPeer.o: SuperPeer.cc \
+  ./kinds.h \
+  ./peerRegister_m.h \
   ./SuperPeer.h
+$O/peerRegister_m.o: peerRegister_m.cc \
+  ./peerRegister_m.h

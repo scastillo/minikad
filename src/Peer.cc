@@ -26,8 +26,52 @@ Peer::~Peer() {
 	// TODO Auto-generated destructor stub
 }
 
-void Peer::initialize(){
+int Peer::numInitStages() const {
+  return 4;
+}
+
+void Peer::setSuperPeers (){
+  const char *spList = par("superPeers").stringValue();
+  superPeers = cStringTokenizer(spList).asIntVector();
+
+}
+
+void Peer::initialize(int stage){
+  if (stage == 0){
+    setSuperPeers();
+    PeerRegister *peerInfo = new PeerRegister("peerInfo",PEER_REGISTER);
+    int id = par("id");
+    peerInfo -> setId(id);
+    peerInfo -> setType(PEER);
+    send(peerInfo, "gate$o");
+  }else if (stage == 2){
+    // cMessage *requestSP = new cMessage("flow",5);
+    // send(requestSP,"gate$o");
+  }// else if (stage == 1){
+   //  cMessage *requestSP = new cMessage("requestSPS",4);
+   //  send(requestSP,"gate$o");
 }
 
 void Peer::handleMessage(cMessage *msg){
+  short msgType = msg -> getKind();
+  int id = par("id");
+  EV << " \n\n\n\n\n I'm peer : " <<  id << " with SuperPeers
+<< " SuperPeers  \n\n\n\n\n ";
+
+
+  // if (msgType == 2 ){ // InitConfigType
+
+  //   // InitConfig *config = check_and_cast<InitConfig *>(msg);
+  //   // int size = config -> getSpIdsArraySize();
+  //   // EV << "\n\n\n\n InitConfig Arrived!  " << size <<" \n\n\n\n";
+  //   // for(int k=0; k < size ; k++ ){
+  //   //   int id = config -> getSpIds(k);
+  //   //   superPeers.push_back(id);
+  //   //   bubble("pushed");
+  //   // }
+
+  //   // for( vector<int>::iterator it = superPeers.begin(); it != superPeers.end(); it++ ){
+  //   //   EV << " \n\n\n\n\nID en peer " <<  *it << "  \n\n\n\n\n ";
+  //   // }
+  // }
 }

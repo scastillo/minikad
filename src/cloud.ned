@@ -18,6 +18,8 @@
 //
 simple Cloud
 {
+  parameters:
+    int numberOfNodes = default(0);
   gates:
      inout gate[];
 }

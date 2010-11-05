@@ -12,13 +12,31 @@ network Minikad
 
     submodules:
         cloud: Cloud;
-        sp1: SuperPeer;
-        sp2: SuperPeer;
-        sp3: SuperPeer;
-        peer1: Peer ;
-        peer2: Peer ;
-        peer3: Peer ;
-        peer4: Peer ;
+        sp1: SuperPeer{
+                id = 1;
+        };
+        sp2: SuperPeer{
+              id = 2;
+        };
+        sp3: SuperPeer{
+          id = 3;
+        };
+       peer1: Peer{
+          id = 1;
+          superPeers = "1 2 3";
+        };
+       peer2: Peer{
+          id = 2;
+          superPeers = "1 2 3";
+        };
+        peer3: Peer{
+                id = 3;
+                superPeers = "1 2 3";
+        };
+        peer4: Peer{
+          id = 4;
+          superPeers = "1 2 3";
+        };
 
     connections:
         sp1.gate <--> Channel <--> cloud.gate++;

@@ -25,8 +25,21 @@ SuperPeer::~SuperPeer() {
 	// TODO Auto-generated destructor stub
 }
 
-void SuperPeer::initialize(){
+int SuperPeer::numInitStages() const {
+  return 4;
 }
+
+
+void SuperPeer::initialize(int stage){
+  if (stage == 0){
+    PeerRegister *peerInfo = new PeerRegister("peerInfo", PEER_REGISTER);
+    int id = par("id");
+    peerInfo -> setId(id);
+    peerInfo -> setType(SUPER_PEER);
+    send(peerInfo, "gate$o");
+  }
+}
+
 
 void SuperPeer::handleMessage(cMessage *msg){
 }
