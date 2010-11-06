@@ -63,7 +63,6 @@ void Peer::initialize(int stage){
       msg -> setStream(stream_req);
       send(msg,"gate$o");
     }
-    streamVideo(1,stream_req);
   }else if(stage == 3){
     cMessage *msg = new cMessage("testPacketx",TEST);
     send(msg,"gate$o");
@@ -74,8 +73,10 @@ void Peer::handleMessage(cMessage *msg){
 
 }
 
-void Peer::streamVideo(int dest, int stream){
+void Peer::streamVideo(cMessage *message){
   int id = par("id");
+  int stream  = 2;
+  int dest = 1;
   for (int i = 0; i < 8 ; i++ ){
     StreamRegReq *msg = new StreamRegReq("streamReq",VIDEO);
     msg -> setDest(dest);
@@ -89,3 +90,6 @@ void Peer::streamVideo(int dest, int stream){
   msg -> setStream(stream);
   sendDelayed(msg,5000,"gate$o");
 }
+void Peer::receiveVideo(cMessage *message){}
+void Peer::kickProvider(int stream){}
+void Peer::reduceLoad(int stream){}

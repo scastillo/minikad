@@ -20,6 +20,8 @@
 #include "peerRegister_m.h"
 #include "streamRegReq_m.h"
 #include "kinds.h"
+#include <map>
+#include <vector>
 
 using namespace std;
 
@@ -27,11 +29,21 @@ const int TYPE=1;
 
 class SuperPeer : public cSimpleModule {
 public:
-	SuperPeer();
-	virtual ~SuperPeer();
-        virtual void initialize(int stage);
-        virtual int numInitStages() const;
-	virtual void handleMessage(cMessage *message);
+  SuperPeer();
+  virtual ~SuperPeer();
+  virtual void initialize(int stage);
+  virtual int numInitStages() const;
+  virtual void handleMessage(cMessage *message);
+  void registerStream(cMessage *message);
+  void selectBestProvider(cMessage *message);
+  void kickProvider(cMessage *message);
+  void reduceLoad(cMessage *message);
+  map<int, vector <int> > streamProviders;
+  map<int, int > peerLoad;
 };
 
 #endif /* SUPERPEER_H_ */
+
+
+// El que recibe end es pateado
+// El que envia un end se le reduce la carga

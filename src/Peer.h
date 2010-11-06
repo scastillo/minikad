@@ -35,11 +35,14 @@ public:
         virtual void initialize(int stage);
         virtual int numInitStages() const;
 	virtual void handleMessage(cMessage *message);
-        void streamVideo(int dest, int stream);
-        void receiveVideo();
+        void streamVideo(cMessage *message);
+        void receiveVideo(cMessage *message);
         void setSuperPeers();
         int count;
         vector <int> superPeers;
+ private:
+        void kickProvider(int stream);
+        void reduceLoad(int stream);
 };
 
 #endif /* PEER_H_ */
