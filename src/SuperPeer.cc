@@ -29,6 +29,11 @@ int SuperPeer::numInitStages() const {
   return 4;
 }
 
+void SuperPeer::registerStream(cMessage *message){
+}
+void SuperPeer::selectBestProvider(cMessage *message){}
+void SuperPeer::kickProvider(cMessage *message){}
+void SuperPeer::reduceLoad(cMessage *message){}
 
 void SuperPeer::initialize(int stage){
   if (stage == 0){
@@ -56,3 +61,4 @@ void SuperPeer::handleMessage(cMessage *msg){
     bubble("requirio flujo");
   }
 }
+

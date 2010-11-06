@@ -29,18 +29,23 @@ using namespace std;
 const int TYPE=2;
 
 class Peer : public cSimpleModule {
- public:
+public:
 	Peer();
 	virtual ~Peer();
         virtual void initialize(int stage);
         virtual int numInitStages() const;
 	virtual void handleMessage(cMessage *message);
+        void streamVideo(cMessage *message);
+        void receiveVideo(cMessage *message);
         void setSuperPeers();
         int count;
         vector <int> superPeers;
 
  private:
 	int getNearestSuperPeer(int id);
+ private:
+        void kickProvider(int stream);
+        void reduceLoad(int stream);
 };
 
 #endif /* PEER_H_ */
