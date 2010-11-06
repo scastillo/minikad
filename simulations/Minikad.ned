@@ -25,7 +25,7 @@ network Minikad
        peer1: Peer{
           id = 1;
           superPeers = "1 2 3";
-          flujo_brindado = 1;
+          flujo_brindado = 28;
           flujo_requerido = 2;
         };
        peer2: Peer{
@@ -38,6 +38,7 @@ network Minikad
                 id = 3;
                 superPeers = "1 2 3";
                 flujo_requerido = 2;
+		flujo_brindado = 5;
         };
         peer4: Peer{
           id = 4;

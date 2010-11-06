@@ -48,7 +48,9 @@ void Peer::initialize(int stage){
     int stream = par("flujo_brindado");
     if (stream != 0){
       StreamRegReq *msg = new StreamRegReq("streamReg",STREAM_REGISTER);
-      msg -> setDest(1);
+      
+      int dest = getNearestSuperPeer(stream);
+      msg -> setDest(dest);
       msg -> setSource(id);
       msg -> setStream(stream);
       send(msg,"gate$o");
@@ -57,7 +59,7 @@ void Peer::initialize(int stage){
     int stream_req = par("flujo_requerido");
     if (stream_req != 0){
       StreamRegReq *msg = new StreamRegReq("streamReq",STREAM_REQUEST);
-      int id = par("id");
+      int dest = getNearestSuperPeer(stream_req);
       msg -> setDest(1);
       msg -> setSource(id);
       msg -> setStream(stream_req);
@@ -70,7 +72,24 @@ void Peer::handleMessage(cMessage *msg){
 
 }
 
-
+int Peer::getNearestSuperPeer(int id){
+  EV << "\n\n\ngetting nearest SuperPeer to id=" << id;
+  int nearest_sp = -1;
+  int nearest_distance = 10000; // infinity :P more or less
+  
+  for(vector<int>::iterator it = superPeers.begin(); it != superPeers.end(); it++){
+    int sp_id = *it;
+    int distance;
+    EV << "\n\n\nSP: " << sp_id << "\n\n\n";
+    distance = id ^ sp_id; 
+    if(distance < nearest_distance){
+      nearest_sp = sp_id;
+      nearest_distance = distance;
+    }
+  }
+  EV << "\n\n the nearest sp from the peer (" << id << ") is: " << nearest_sp << "\n\n\n";
+  return nearest_distance;
+}
 
   // if (msgType == 2 ){ // InitConfigType
 

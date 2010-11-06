@@ -29,7 +29,7 @@ using namespace std;
 const int TYPE=2;
 
 class Peer : public cSimpleModule {
-public:
+ public:
 	Peer();
 	virtual ~Peer();
         virtual void initialize(int stage);
@@ -38,6 +38,9 @@ public:
         void setSuperPeers();
         int count;
         vector <int> superPeers;
+
+ private:
+	int getNearestSuperPeer(int id);
 };
 
 #endif /* PEER_H_ */
