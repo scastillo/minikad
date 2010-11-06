@@ -37,26 +37,39 @@ void Peer::setSuperPeers (){
 }
 
 void Peer::initialize(int stage){
+  int id = par("id");
   if (stage == 0){
     setSuperPeers();
     PeerRegister *peerInfo = new PeerRegister("peerInfo",PEER_REGISTER);
-    int id = par("id");
     peerInfo -> setId(id);
     peerInfo -> setType(PEER);
     send(peerInfo, "gate$o");
+  }else if (stage == 1){
+    int flow = par("flujo_brindado");
+    if (flow != 0){
+      FlowRegReq *msg = new FlowRegReq("flowReg",FLOW_REGISTER);
+      msg -> setDest(1);
+      msg -> setSource(id);
+      msg -> setFlow(flow);
+      send(msg,"gate$o");
+    }
   }else if (stage == 2){
-    // cMessage *requestSP = new cMessage("flow",5);
-    // send(requestSP,"gate$o");
-  }// else if (stage == 1){
-   //  cMessage *requestSP = new cMessage("requestSPS",4);
-   //  send(requestSP,"gate$o");
+    int flow_req = par("flujo_requerido");
+    if (flow_req != 0){
+      FlowRegReq *msg = new FlowRegReq("flowReq",FLOW_REQUEST);
+      int id = par("id");
+      msg -> setDest(1);
+      msg -> setSource(id);
+      msg -> setFlow(flow_req);
+      send(msg,"gate$o");
+    }
+  }
 }
 
 void Peer::handleMessage(cMessage *msg){
-  short msgType = msg -> getKind();
-  int id = par("id");
-  EV << " \n\n\n\n\n I'm peer : " <<  id << " with SuperPeers
-<< " SuperPeers  \n\n\n\n\n ";
+
+}
+
 
 
   // if (msgType == 2 ){ // InitConfigType
@@ -74,4 +87,3 @@ void Peer::handleMessage(cMessage *msg){
   //   //   EV << " \n\n\n\n\nID en peer " <<  *it << "  \n\n\n\n\n ";
   //   // }
   // }
-}

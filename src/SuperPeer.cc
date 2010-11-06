@@ -37,9 +37,22 @@ void SuperPeer::initialize(int stage){
     peerInfo -> setId(id);
     peerInfo -> setType(SUPER_PEER);
     send(peerInfo, "gate$o");
+  }else if (stage == 1){
+
+
+  }else if (stage == 2){
+
+
+
   }
 }
 
 
 void SuperPeer::handleMessage(cMessage *msg){
+  short messageType = msg -> getKind();
+  if( messageType == FLOW_REGISTER ){
+    bubble("registro flujo");
+  }else if( messageType == FLOW_REQUEST ){
+    bubble("requirio flujo");
+  }
 }

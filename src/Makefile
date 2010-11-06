@@ -28,10 +28,11 @@ PROJECTRELATIVE_PATH = /src
 O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 
 # Object files for local .cc and .msg files
-OBJS = $O/Cloud.o $O/Peer.o $O/SuperPeer.o $O/peerRegister_m.o
+OBJS = $O/Cloud.o $O/Peer.o $O/SuperPeer.o $O/flowRegReq_m.o $O/peerRegister_m.o
 
 # Message files
 MSGFILES = \
+    flowRegReq.msg \
     peerRegister.msg
 
 #------------------------------------------------------------------------------
@@ -105,14 +106,19 @@ depend:
 $O/Cloud.o: Cloud.cc \
   ./kinds.h \
   ./Cloud.h \
+  ./flowRegReq_m.h \
   ./peerRegister_m.h
 $O/Peer.o: Peer.cc \
   ./kinds.h \
+  ./flowRegReq_m.h \
   ./peerRegister_m.h \
   ./Peer.h
 $O/SuperPeer.o: SuperPeer.cc \
   ./kinds.h \
+  ./flowRegReq_m.h \
   ./peerRegister_m.h \
   ./SuperPeer.h
+$O/flowRegReq_m.o: flowRegReq_m.cc \
+  ./flowRegReq_m.h
 $O/peerRegister_m.o: peerRegister_m.cc \
   ./peerRegister_m.h

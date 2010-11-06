@@ -18,6 +18,7 @@
 
 #include <omnetpp.h>
 #include "peerRegister_m.h"
+#include "flowRegReq_m.h"
 #include <exception>
 #include <map>
 #include "kinds.h"
@@ -32,6 +33,8 @@ public:
         virtual void initialize(int stage);
         virtual int numInitStages() const;
 	virtual void handleMessage(cMessage *message);
+      	int superPeerResolver(int id);
+        int peerResolver(int id);
         map<int, int> superPeers; // dns por superPeers
         map<int, int> peers;
 };

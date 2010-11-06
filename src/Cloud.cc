@@ -32,6 +32,12 @@ int Cloud::numInitStages() const {
 void Cloud::initialize(int stage){
 }
 
+int Cloud::superPeerResolver(int id){
+  return superPeers[id];
+};
+int Cloud::peerResolver(int id){
+  return peers[id];
+};
 
 void Cloud::handleMessage(cMessage *msg){
   short messageType = msg -> getKind();
@@ -47,8 +53,13 @@ void Cloud::handleMessage(cMessage *msg){
     }else if ( type == PEER){
       peers[id] = ip ;
       EV << "\n\n\n\n Register peer con id "<< id <<"  \n\n\n\n";
-      send(peerInfo,"gate$o",ip);
     }
+  }else if(messageType == FLOW_REGISTER || messageType == FLOW_REQUEST ){
+    FlowRegReq *msgRegReq = check_and_cast<FlowRegReq *>(msg);
+    int dest = msgRegReq -> getDest();
+    int ip = superPeerResolver(dest);
+    EV << "\n\n\n\n RegReq "<< ip <<"  \n\n\n\n";
+    send(msgRegReq,"gate$o",ip);
   }
 }
     // map<int, int>::const_iterator iter;

@@ -18,7 +18,10 @@ simple Peer
    parameters:
       int id;
       string superPeers; //List with ids of superpeers
-      int flujo= default(0);
+      // id del flujo, 0 es no hace accion
+      int flujo_brindado= default(0);
+      // requiere flujo con id.
+      int flujo_requerido = default(0);
     gates:
         inout gate;
 }
