@@ -18,7 +18,7 @@
 
 #include <omnetpp.h>
 #include "peerRegister_m.h"
-#include "flowRegReq_m.h"
+#include "streamRegReq_m.h"
 #include "kinds.h"
 
 using namespace std;

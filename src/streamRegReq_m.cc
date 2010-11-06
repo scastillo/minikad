@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by opp_msgc 4.1 from flowRegReq.msg.
+// Generated file, do not edit! Created by opp_msgc 4.1 from streamRegReq.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include <sstream>
-#include "flowRegReq_m.h"
+#include "streamRegReq_m.h"
 
 // Template rule which fires if a struct or class doesn't have operator<<
 template<typename T>
@@ -30,86 +30,86 @@ void doUnpacking(cCommBuffer *, T& t) {
 
 
 
-Register_Class(FlowRegReq);
+Register_Class(StreamRegReq);
 
-FlowRegReq::FlowRegReq(const char *name, int kind) : cPacket(name,kind)
+StreamRegReq::StreamRegReq(const char *name, int kind) : cPacket(name,kind)
 {
-    this->flow_var = 0;
+    this->stream_var = 0;
     this->dest_var = 0;
     this->source_var = 0;
 }
 
-FlowRegReq::FlowRegReq(const FlowRegReq& other) : cPacket()
+StreamRegReq::StreamRegReq(const StreamRegReq& other) : cPacket()
 {
     setName(other.getName());
     operator=(other);
 }
 
-FlowRegReq::~FlowRegReq()
+StreamRegReq::~StreamRegReq()
 {
 }
 
-FlowRegReq& FlowRegReq::operator=(const FlowRegReq& other)
+StreamRegReq& StreamRegReq::operator=(const StreamRegReq& other)
 {
     if (this==&other) return *this;
     cPacket::operator=(other);
-    this->flow_var = other.flow_var;
+    this->stream_var = other.stream_var;
     this->dest_var = other.dest_var;
     this->source_var = other.source_var;
     return *this;
 }
 
-void FlowRegReq::parsimPack(cCommBuffer *b)
+void StreamRegReq::parsimPack(cCommBuffer *b)
 {
     cPacket::parsimPack(b);
-    doPacking(b,this->flow_var);
+    doPacking(b,this->stream_var);
     doPacking(b,this->dest_var);
     doPacking(b,this->source_var);
 }
 
-void FlowRegReq::parsimUnpack(cCommBuffer *b)
+void StreamRegReq::parsimUnpack(cCommBuffer *b)
 {
     cPacket::parsimUnpack(b);
-    doUnpacking(b,this->flow_var);
+    doUnpacking(b,this->stream_var);
     doUnpacking(b,this->dest_var);
     doUnpacking(b,this->source_var);
 }
 
-int FlowRegReq::getFlow() const
+int StreamRegReq::getStream() const
 {
-    return flow_var;
+    return stream_var;
 }
 
-void FlowRegReq::setFlow(int flow_var)
+void StreamRegReq::setStream(int stream_var)
 {
-    this->flow_var = flow_var;
+    this->stream_var = stream_var;
 }
 
-int FlowRegReq::getDest() const
+int StreamRegReq::getDest() const
 {
     return dest_var;
 }
 
-void FlowRegReq::setDest(int dest_var)
+void StreamRegReq::setDest(int dest_var)
 {
     this->dest_var = dest_var;
 }
 
-int FlowRegReq::getSource() const
+int StreamRegReq::getSource() const
 {
     return source_var;
 }
 
-void FlowRegReq::setSource(int source_var)
+void StreamRegReq::setSource(int source_var)
 {
     this->source_var = source_var;
 }
 
-class FlowRegReqDescriptor : public cClassDescriptor
+class StreamRegReqDescriptor : public cClassDescriptor
 {
   public:
-    FlowRegReqDescriptor();
-    virtual ~FlowRegReqDescriptor();
+    StreamRegReqDescriptor();
+    virtual ~StreamRegReqDescriptor();
 
     virtual bool doesSupport(cObject *obj) const;
     virtual const char *getProperty(const char *propertyname) const;
@@ -128,34 +128,34 @@ class FlowRegReqDescriptor : public cClassDescriptor
     virtual void *getFieldStructPointer(void *object, int field, int i) const;
 };
 
-Register_ClassDescriptor(FlowRegReqDescriptor);
+Register_ClassDescriptor(StreamRegReqDescriptor);
 
-FlowRegReqDescriptor::FlowRegReqDescriptor() : cClassDescriptor("FlowRegReq", "cPacket")
+StreamRegReqDescriptor::StreamRegReqDescriptor() : cClassDescriptor("StreamRegReq", "cPacket")
 {
 }
 
-FlowRegReqDescriptor::~FlowRegReqDescriptor()
+StreamRegReqDescriptor::~StreamRegReqDescriptor()
 {
 }
 
-bool FlowRegReqDescriptor::doesSupport(cObject *obj) const
+bool StreamRegReqDescriptor::doesSupport(cObject *obj) const
 {
-    return dynamic_cast<FlowRegReq *>(obj)!=NULL;
+    return dynamic_cast<StreamRegReq *>(obj)!=NULL;
 }
 
-const char *FlowRegReqDescriptor::getProperty(const char *propertyname) const
+const char *StreamRegReqDescriptor::getProperty(const char *propertyname) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? basedesc->getProperty(propertyname) : NULL;
 }
 
-int FlowRegReqDescriptor::getFieldCount(void *object) const
+int StreamRegReqDescriptor::getFieldCount(void *object) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? 3+basedesc->getFieldCount(object) : 3;
 }
 
-unsigned int FlowRegReqDescriptor::getFieldTypeFlags(void *object, int field) const
+unsigned int StreamRegReqDescriptor::getFieldTypeFlags(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -171,7 +171,7 @@ unsigned int FlowRegReqDescriptor::getFieldTypeFlags(void *object, int field) co
     return (field>=0 && field<3) ? fieldTypeFlags[field] : 0;
 }
 
-const char *FlowRegReqDescriptor::getFieldName(void *object, int field) const
+const char *StreamRegReqDescriptor::getFieldName(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -180,24 +180,24 @@ const char *FlowRegReqDescriptor::getFieldName(void *object, int field) const
         field -= basedesc->getFieldCount(object);
     }
     static const char *fieldNames[] = {
-        "flow",
+        "stream",
         "dest",
         "source",
     };
     return (field>=0 && field<3) ? fieldNames[field] : NULL;
 }
 
-int FlowRegReqDescriptor::findField(void *object, const char *fieldName) const
+int StreamRegReqDescriptor::findField(void *object, const char *fieldName) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     int base = basedesc ? basedesc->getFieldCount(object) : 0;
-    if (fieldName[0]=='f' && strcmp(fieldName, "flow")==0) return base+0;
+    if (fieldName[0]=='s' && strcmp(fieldName, "stream")==0) return base+0;
     if (fieldName[0]=='d' && strcmp(fieldName, "dest")==0) return base+1;
     if (fieldName[0]=='s' && strcmp(fieldName, "source")==0) return base+2;
     return basedesc ? basedesc->findField(object, fieldName) : -1;
 }
 
-const char *FlowRegReqDescriptor::getFieldTypeString(void *object, int field) const
+const char *StreamRegReqDescriptor::getFieldTypeString(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -213,7 +213,7 @@ const char *FlowRegReqDescriptor::getFieldTypeString(void *object, int field) co
     return (field>=0 && field<3) ? fieldTypeStrings[field] : NULL;
 }
 
-const char *FlowRegReqDescriptor::getFieldProperty(void *object, int field, const char *propertyname) const
+const char *StreamRegReqDescriptor::getFieldProperty(void *object, int field, const char *propertyname) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -226,7 +226,7 @@ const char *FlowRegReqDescriptor::getFieldProperty(void *object, int field, cons
     }
 }
 
-int FlowRegReqDescriptor::getArraySize(void *object, int field) const
+int StreamRegReqDescriptor::getArraySize(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -234,13 +234,13 @@ int FlowRegReqDescriptor::getArraySize(void *object, int field) const
             return basedesc->getArraySize(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    FlowRegReq *pp = (FlowRegReq *)object; (void)pp;
+    StreamRegReq *pp = (StreamRegReq *)object; (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-std::string FlowRegReqDescriptor::getFieldAsString(void *object, int field, int i) const
+std::string StreamRegReqDescriptor::getFieldAsString(void *object, int field, int i) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -248,16 +248,16 @@ std::string FlowRegReqDescriptor::getFieldAsString(void *object, int field, int 
             return basedesc->getFieldAsString(object,field,i);
         field -= basedesc->getFieldCount(object);
     }
-    FlowRegReq *pp = (FlowRegReq *)object; (void)pp;
+    StreamRegReq *pp = (StreamRegReq *)object; (void)pp;
     switch (field) {
-        case 0: return long2string(pp->getFlow());
+        case 0: return long2string(pp->getStream());
         case 1: return long2string(pp->getDest());
         case 2: return long2string(pp->getSource());
         default: return "";
     }
 }
 
-bool FlowRegReqDescriptor::setFieldAsString(void *object, int field, int i, const char *value) const
+bool StreamRegReqDescriptor::setFieldAsString(void *object, int field, int i, const char *value) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -265,16 +265,16 @@ bool FlowRegReqDescriptor::setFieldAsString(void *object, int field, int i, cons
             return basedesc->setFieldAsString(object,field,i,value);
         field -= basedesc->getFieldCount(object);
     }
-    FlowRegReq *pp = (FlowRegReq *)object; (void)pp;
+    StreamRegReq *pp = (StreamRegReq *)object; (void)pp;
     switch (field) {
-        case 0: pp->setFlow(string2long(value)); return true;
+        case 0: pp->setStream(string2long(value)); return true;
         case 1: pp->setDest(string2long(value)); return true;
         case 2: pp->setSource(string2long(value)); return true;
         default: return false;
     }
 }
 
-const char *FlowRegReqDescriptor::getFieldStructName(void *object, int field) const
+const char *StreamRegReqDescriptor::getFieldStructName(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -290,7 +290,7 @@ const char *FlowRegReqDescriptor::getFieldStructName(void *object, int field) co
     return (field>=0 && field<3) ? fieldStructNames[field] : NULL;
 }
 
-void *FlowRegReqDescriptor::getFieldStructPointer(void *object, int field, int i) const
+void *StreamRegReqDescriptor::getFieldStructPointer(void *object, int field, int i) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -298,7 +298,7 @@ void *FlowRegReqDescriptor::getFieldStructPointer(void *object, int field, int i
             return basedesc->getFieldStructPointer(object, field, i);
         field -= basedesc->getFieldCount(object);
     }
-    FlowRegReq *pp = (FlowRegReq *)object; (void)pp;
+    StreamRegReq *pp = (StreamRegReq *)object; (void)pp;
     switch (field) {
         default: return NULL;
     }

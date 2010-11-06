@@ -19,7 +19,7 @@
 
 #include <omnetpp.h>
 #include "peerRegister_m.h"
-#include "flowRegReq_m.h"
+#include "streamRegReq_m.h"
 #include <vector>
 #include <cstringtokenizer.h>
 #include "kinds.h"

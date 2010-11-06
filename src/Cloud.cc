@@ -54,8 +54,8 @@ void Cloud::handleMessage(cMessage *msg){
       peers[id] = ip ;
       EV << "\n\n\n\n Register peer con id "<< id <<"  \n\n\n\n";
     }
-  }else if(messageType == FLOW_REGISTER || messageType == FLOW_REQUEST ){
-    FlowRegReq *msgRegReq = check_and_cast<FlowRegReq *>(msg);
+  }else if(messageType == STREAM_REGISTER || messageType == STREAM_REQUEST ){
+    StreamRegReq *msgRegReq = check_and_cast<StreamRegReq *>(msg);
     int dest = msgRegReq -> getDest();
     int ip = superPeerResolver(dest);
     EV << "\n\n\n\n RegReq "<< ip <<"  \n\n\n\n";

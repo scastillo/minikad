@@ -50,9 +50,9 @@ void SuperPeer::initialize(int stage){
 
 void SuperPeer::handleMessage(cMessage *msg){
   short messageType = msg -> getKind();
-  if( messageType == FLOW_REGISTER ){
+  if( messageType == STREAM_REGISTER ){
     bubble("registro flujo");
-  }else if( messageType == FLOW_REQUEST ){
+  }else if( messageType == STREAM_REQUEST ){
     bubble("requirio flujo");
   }
 }

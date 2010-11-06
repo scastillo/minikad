@@ -45,22 +45,22 @@ void Peer::initialize(int stage){
     peerInfo -> setType(PEER);
     send(peerInfo, "gate$o");
   }else if (stage == 1){
-    int flow = par("flujo_brindado");
-    if (flow != 0){
-      FlowRegReq *msg = new FlowRegReq("flowReg",FLOW_REGISTER);
+    int stream = par("flujo_brindado");
+    if (stream != 0){
+      StreamRegReq *msg = new StreamRegReq("streamReg",STREAM_REGISTER);
       msg -> setDest(1);
       msg -> setSource(id);
-      msg -> setFlow(flow);
+      msg -> setStream(stream);
       send(msg,"gate$o");
     }
   }else if (stage == 2){
-    int flow_req = par("flujo_requerido");
-    if (flow_req != 0){
-      FlowRegReq *msg = new FlowRegReq("flowReq",FLOW_REQUEST);
+    int stream_req = par("flujo_requerido");
+    if (stream_req != 0){
+      StreamRegReq *msg = new StreamRegReq("streamReq",STREAM_REQUEST);
       int id = par("id");
       msg -> setDest(1);
       msg -> setSource(id);
-      msg -> setFlow(flow_req);
+      msg -> setStream(stream_req);
       send(msg,"gate$o");
     }
   }
@@ -87,3 +87,7 @@ void Peer::handleMessage(cMessage *msg){
   //   //   EV << " \n\n\n\n\nID en peer " <<  *it << "  \n\n\n\n\n ";
   //   // }
   // }
+
+
+//sendStream
+// message for stream handling

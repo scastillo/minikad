@@ -16,8 +16,8 @@
 //
 // TODO generated message class
 //
-packet FlowRegReq {
-    int flow;
+packet StreamRegReq {
+    int stream;
     int dest;
     int source;
 }
