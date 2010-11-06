@@ -3,15 +3,15 @@
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+//
 
 #include "Peer.h"
 
@@ -48,8 +48,8 @@ void Peer::initialize(int stage){
     int stream = par("flujo_brindado");
     if (stream != 0){
       StreamRegReq *msg = new StreamRegReq("streamReg",STREAM_REGISTER);
-      
       int dest = getNearestSuperPeer(stream);
+      EV << "\n\n\n\n requiere a destino en registro: "<< dest <<"  \n\n\n\n";
       msg -> setDest(dest);
       msg -> setSource(id);
       msg -> setStream(stream);
@@ -60,38 +60,50 @@ void Peer::initialize(int stage){
     if (stream_req != 0){
       StreamRegReq *msg = new StreamRegReq("streamReq",STREAM_REQUEST);
       int dest = getNearestSuperPeer(stream_req);
-      msg -> setDest(1);
+      EV << "\n\n\n\n requiere a destino: "<< dest <<"  \n\n\n\n";
+      msg -> setDest(dest);
       msg -> setSource(id);
       msg -> setStream(stream_req);
       send(msg,"gate$o");
     }
   }else if(stage == 3){
-    cMessage *msg = new cMessage("testPacketx",TEST);
-    send(msg,"gate$o");
+    // cMessage *msg = new cMessage("testPacketx",TEST);
+    // send(msg,"gate$o");
   }
 }
 
+void Peer::handleStreamResponse(cMessage *msg){
+  EV << "\n\n\n\n\n llego al stream response \n\n\n\n\n\n\n";
+  bubble("handle stream response !!!");
+}
 void Peer::handleMessage(cMessage *msg){
-
+  short messageType = msg -> getKind();
+  switch(messageType){
+    case STREAM_RESPONSE:
+      handleStreamResponse(msg);
+      break;
+    default: bubble("No se reconocio un mensaje");
+      break;
+  }
 }
 
 int Peer::getNearestSuperPeer(int id){
   EV << "\n\n\ngetting nearest SuperPeer to id=" << id;
   int nearest_sp = -1;
   int nearest_distance = 10000; // infinity :P more or less
-  
+
   for(vector<int>::iterator it = superPeers.begin(); it != superPeers.end(); it++){
     int sp_id = *it;
     int distance;
     EV << "\n\n\nSP: " << sp_id << "\n\n\n";
-    distance = id ^ sp_id; 
+    distance = id ^ sp_id;
     if(distance < nearest_distance){
       nearest_sp = sp_id;
       nearest_distance = distance;
     }
   }
   EV << "\n\n the nearest sp from the peer (" << id << ") is: " << nearest_sp << "\n\n\n";
-  return nearest_distance;
+  return nearest_sp;
 }
 
   // if (msgType == 2 ){ // InitConfigType

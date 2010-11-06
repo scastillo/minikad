@@ -8,6 +8,7 @@
 #define PEER 5
 #define VIDEO 6
 #define END_VIDEO 7
-#define TEST -1 
+#define STREAM_RESPONSE 8
+#define TEST -1
 
 #endif

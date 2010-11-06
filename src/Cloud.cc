@@ -58,14 +58,22 @@ void Cloud::handleMessage(cMessage *msg){
 
     StreamRegReq *msgRegReq = check_and_cast<StreamRegReq *>(msg);
     int dest = msgRegReq -> getDest();
+    EV << "\n\n\n\n destino cloud: "<< dest <<"  \n\n\n\n";
     int ip = superPeerResolver(dest);
-    EV << "\n\n\n\n RegReq "<< ip <<"  \n\n\n\n";
     send(msgRegReq,"gate$o",ip);
 
   }else if(messageType == VIDEO ){
     bubble("Video Arrived!!!");
   }else if(messageType == END_VIDEO ){
     bubble("End VIDEO!!!");
+  }else if(messageType == STREAM_RESPONSE ){
+    bubble("StreamResponse!!!!!");
+    StreamResponse *response = check_and_cast<StreamResponse *>(msg);
+    int dest = response -> getDest();
+    int stream = response -> getStream();
+    int ip = peerResolver(dest);
+    EV << "\n\n\n\n\n STREAM_RESPONSE con destion " << dest << " Y flujo " << stream <<" \n\n\n\n\n" ;
+    send(response,"gate$o",ip);
   }else if(messageType == TEST ){
     bubble("No deberia haber llegado video arrived todavia!!!");
   }

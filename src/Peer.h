@@ -20,6 +20,7 @@
 #include <omnetpp.h>
 #include "peerRegister_m.h"
 #include "streamRegReq_m.h"
+#include "streamResponse_m.h"
 #include <vector>
 #include <cstringtokenizer.h>
 #include "kinds.h"
@@ -37,13 +38,13 @@ public:
 	virtual void handleMessage(cMessage *message);
         void streamVideo(cMessage *message);
         void receiveVideo(cMessage *message);
+        void handleStreamResponse(cMessage *message);
         void setSuperPeers();
         int count;
         vector <int> superPeers;
 
  private:
 	int getNearestSuperPeer(int id);
- private:
         void kickProvider(int stream);
         void reduceLoad(int stream);
 };

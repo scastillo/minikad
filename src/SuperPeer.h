@@ -19,27 +19,33 @@
 #include <omnetpp.h>
 #include "peerRegister_m.h"
 #include "streamRegReq_m.h"
+#include "streamResponse_m.h"
 #include "kinds.h"
 #include <map>
 #include <vector>
 
 using namespace std;
 
+
 const int TYPE=1;
 
 class SuperPeer : public cSimpleModule {
 public:
+  typedef map<int, vector <int> > StreamProvidersMap;
+  typedef map<int, int > PeersLoadMap;
+
   SuperPeer();
   virtual ~SuperPeer();
   virtual void initialize(int stage);
   virtual int numInitStages() const;
   virtual void handleMessage(cMessage *message);
   void registerStream(cMessage *message);
-  void selectBestProvider(cMessage *message);
+  int selectBestProvider(int stream);
+  void streamRequestHandler(cMessage *message);
   void kickProvider(cMessage *message);
   void reduceLoad(cMessage *message);
-  map<int, vector <int> > streamProviders;
-  map<int, int > peerLoad;
+  StreamProvidersMap streamProviders;
+  PeersLoadMap peerLoad;
 };
 
 #endif /* SUPERPEER_H_ */

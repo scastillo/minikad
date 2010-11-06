@@ -13,31 +13,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef CLOUD_H_
-#define CLOUD_H_
-
-#include <omnetpp.h>
-#include "peerRegister_m.h"
-#include "streamRegReq_m.h"
-#include "streamResponse_m.h"
-#include <exception>
-#include <map>
-#include "kinds.h"
-
-
-using namespace std;
-
-class Cloud : public cSimpleModule {
-public:
-	Cloud();
-	virtual ~Cloud();
-        virtual void initialize(int stage);
-        virtual int numInitStages() const;
-	virtual void handleMessage(cMessage *message);
-      	int superPeerResolver(int id);
-        int peerResolver(int id);
-        map<int, int> superPeers; // dns por superPeers
-        map<int, int> peers;
-};
-
-#endif /* CLOUD_H_ */
+//
+// TODO generated message class
+//
+message StreamResponse {
+    int provider;
+    int dest;
+    int stream;
+}
