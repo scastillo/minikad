@@ -35,6 +35,8 @@ public:
         virtual void initialize(int stage);
         virtual int numInitStages() const;
 	virtual void handleMessage(cMessage *message);
+        void streamVideo(int dest, int stream);
+        void receiveVideo();
         void setSuperPeers();
         int count;
         vector <int> superPeers;

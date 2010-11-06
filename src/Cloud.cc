@@ -43,45 +43,30 @@ void Cloud::handleMessage(cMessage *msg){
   short messageType = msg -> getKind();
 
   if (messageType == PEER_REGISTER ){
+
     PeerRegister *peerInfo = check_and_cast<PeerRegister *>(msg);
     int ip = (peerInfo -> getArrivalGate()) -> getIndex();
     int id = peerInfo -> getId();
     int type = peerInfo -> getType();
-    if ( type == SUPER_PEER ){ // 1 que es un superPeer
+    if ( type == SUPER_PEER ){
       superPeers[id] = ip;
-      EV << "\n\n\n\n Register superpeer con id "<< id <<"  \n\n\n\n";
     }else if ( type == PEER){
       peers[id] = ip ;
-      EV << "\n\n\n\n Register peer con id "<< id <<"  \n\n\n\n";
     }
+
   }else if(messageType == STREAM_REGISTER || messageType == STREAM_REQUEST ){
+
     StreamRegReq *msgRegReq = check_and_cast<StreamRegReq *>(msg);
     int dest = msgRegReq -> getDest();
     int ip = superPeerResolver(dest);
     EV << "\n\n\n\n RegReq "<< ip <<"  \n\n\n\n";
     send(msgRegReq,"gate$o",ip);
+
+  }else if(messageType == VIDEO ){
+    bubble("Video Arrived!!!");
+  }else if(messageType == END_VIDEO ){
+    bubble("End VIDEO!!!");
+  }else if(messageType == TEST ){
+    bubble("No deberia haber llegado video arrived todavia!!!");
   }
 }
-    // map<int, int>::const_iterator iter;
-    // for (iter=superPeers.begin(); iter != superPeers.end(); ++iter) {
-    //   EV << "\n\n\n SuperPeer info:  id "<< iter->first<< " direccion "<< iter->second  <<"\n\n\n\n";
-    // }
-    // map<int, int>::const_iterator iter2;
-    // for (iter2=peers.begin(); iter2 != peers.end(); ++iter2) {
-    //   EV << "\n\n\n Peer info:  id "<< iter2->first<< " direccion "<< iter2->second  <<"\n\n\n\n";
-    // }
-
-    // short initConfigType = 2;
-    // int numberOfSp = superPeers.size();
-    // EV << "\n\n\n\n Rquest SPS! " << numberOfSp << " \n\n\n\n";
-    // InitConfig *config = new InitConfig("initConfig ",initConfigType);
-    // config -> setSpIdsArraySize(numberOfSp );
-
-    // map<int, int>::const_iterator iter;
-    // int k = 0;
-    // for (iter=superPeers.begin(); iter != superPeers.end(); ++iter) {
-    //   EV << "\n\n\n SuperPeer i  nfo:  id "<< iter->first<< " direccion "<< iter->second  <<"\n\n\n\n";
-    //   config->setSpIds(k,iter->first);
-    //   k++;
-    // }
-    // int ip = (msg -> getArrivalGate()) -> getIndex();

@@ -63,6 +63,10 @@ void Peer::initialize(int stage){
       msg -> setStream(stream_req);
       send(msg,"gate$o");
     }
+    streamVideo(1,stream_req);
+  }else if(stage == 3){
+    cMessage *msg = new cMessage("testPacketx",TEST);
+    send(msg,"gate$o");
   }
 }
 
@@ -70,24 +74,18 @@ void Peer::handleMessage(cMessage *msg){
 
 }
 
-
-
-  // if (msgType == 2 ){ // InitConfigType
-
-  //   // InitConfig *config = check_and_cast<InitConfig *>(msg);
-  //   // int size = config -> getSpIdsArraySize();
-  //   // EV << "\n\n\n\n InitConfig Arrived!  " << size <<" \n\n\n\n";
-  //   // for(int k=0; k < size ; k++ ){
-  //   //   int id = config -> getSpIds(k);
-  //   //   superPeers.push_back(id);
-  //   //   bubble("pushed");
-  //   // }
-
-  //   // for( vector<int>::iterator it = superPeers.begin(); it != superPeers.end(); it++ ){
-  //   //   EV << " \n\n\n\n\nID en peer " <<  *it << "  \n\n\n\n\n ";
-  //   // }
-  // }
-
-
-//sendStream
-// message for stream handling
+void Peer::streamVideo(int dest, int stream){
+  int id = par("id");
+  for (int i = 0; i < 8 ; i++ ){
+    StreamRegReq *msg = new StreamRegReq("streamReq",VIDEO);
+    msg -> setDest(dest);
+    msg -> setSource(id);
+    msg -> setStream(stream);
+    sendDelayed(msg,500 * (i+1),"gate$o");
+  }
+  StreamRegReq *msg = new StreamRegReq("streamFinish",END_VIDEO);
+  msg -> setDest(dest);
+  msg -> setSource(id);
+  msg -> setStream(stream);
+  sendDelayed(msg,5000,"gate$o");
+}
