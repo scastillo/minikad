@@ -17,7 +17,8 @@ simple SuperPeer
 {
     parameters:
       int id;
-      @display("i=device/server");    
+      string superPeers;
+      @display("i=device/server");
     gates:
         inout gate;
 }

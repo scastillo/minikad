@@ -53,7 +53,7 @@ void Cloud::handleMessage(cMessage *msg){
       peers[id] = ip ;
     }
 
-  }else if(messageType == STREAM_REGISTER || messageType == STREAM_REQUEST || messageType == KICK_PEER || messageType == REDUCE_LOAD  ){
+  }else if(messageType == STREAM_REGISTER || messageType == STREAM_REQUEST || messageType == KICK_PEER || messageType == REDUCE_LOAD || messageType == INCREASE_LOAD  ){
     StreamRegReq *msgRegReq = check_and_cast<StreamRegReq *>(msg);
     int dest = msgRegReq -> getDest();
     EV << "\n\n\n\n destino cloud: "<< dest <<"  \n\n\n\n";

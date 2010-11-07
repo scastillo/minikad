@@ -76,12 +76,25 @@ void SuperPeer::streamRequestHandler(cMessage *message){
    response -> setStream(stream);
 
    peerLoad[provider] ++;
+   //Notifica a los otros sp sobre la nueva carga del Peer - provider.
+   for(vector<int>::iterator it = superPeers.begin(); it != superPeers.end(); it++){
+    int id = *it;
+    int my_id = par("id");
+    if (my_id != id ){
+      StreamRegReq *msg = new StreamRegReq("increasingLoad",INCREASE_LOAD);
+      msg -> setDest(id);
+      msg -> setSource(provider);
+      msg -> setStream(stream);
+      msg -> setExtra(1);
+      send(msg,"gate$o");
+    }
+   }
    streamProviders[stream].push_back(source);
-    stringstream ss ;
-    ss << "carga en el provedor " << provider << " es " << peerLoad[provider];
-    EV << "\n\n\n carga en el provedor " << provider << " es " << peerLoad[provider] << "\n\n\n\n";
-    bubble(ss.str().c_str());
-    send(response, "gate$o");
+   stringstream ss ;
+   ss << "carga en el provedor " << provider << " es " << peerLoad[provider];
+   EV << "\n\n\n carga en el provedor " << provider << " es " << peerLoad[provider] << "\n\n\n\n";
+   bubble(ss.str().c_str());
+   send(response, "gate$o");
   }
 }
 void SuperPeer::kickProvider(cMessage *message){
@@ -103,7 +116,7 @@ void SuperPeer::kickProvider(cMessage *message){
       EV << "\n\n ** Ready to kick!... provider: " << provider << ", in index " << *(provider_index) << "\n\n\n\n";
       streamProviders[stream].erase(provider_index);
       EV << "\n\n ** Oh yeah!... provider: " << provider << ", kicked from provider of stream " << stream << "\n\n\n\n";
-      break; // Con este break dejamos de seguir recorriendo el hp arreglo si es que ya encontramos al que era.
+      break;
     }else{
       EV << "provider =" << provider << ". oh you luck boy...Not kicking you." << "\n\n\n";
     }
@@ -125,14 +138,36 @@ void SuperPeer::reduceLoad(cMessage *message){
   if (peerLoad[peer] < 0 ){
     peerLoad[peer] = 0;
   }
+  bool fromSP = msg -> getFromSP();
+  if (!fromSP){
+    for(vector<int>::iterator it = superPeers.begin(); it != superPeers.end(); it++){
+      int id = *it;
+      int my_id = par("id");
+      if (my_id != id ){
+        StreamRegReq *copy = msg->dup();
+        copy -> setDest(id);
+        copy -> setFromSP(true);
+        send(copy,"gate$o");
+      }
+    }
+  }
 }
 
 void SuperPeer::increaseLoad(cMessage *message){
-
+  StreamRegReq *msg = check_and_cast<StreamRegReq *>(message);
+  int peer = msg -> getSource();
+  int by = msg -> getExtra();
+  stringstream ss ;
+  ss << "Incrementando el proveedor " << peer << " en " << by;
+  bubble(ss.str().c_str());
+  EV << "\n\nLoad for peer: " << peer  << " : " << peerLoad[peer] << "  increasing by: " << by;
+  peerLoad[peer] += by ;
+  EV << "\n\nNew Load for peer: " << peer  << " : " << peerLoad[peer] << " \n" ;
 }
 
 void SuperPeer::initialize(int stage){
   if (stage == 0){
+    setSuperPeers();
     PeerRegister *peerInfo = new PeerRegister("peerInfo", PEER_REGISTER);
     int id = par("id");
     peerInfo -> setId(id);
@@ -158,6 +193,13 @@ void SuperPeer::handleMessage(cMessage *msg){
   }else if( messageType == REDUCE_LOAD){
     bubble("reduce load  !!!!");
     reduceLoad(msg);
+  }else if(messageType == INCREASE_LOAD){
+    increaseLoad(msg);
   }
 }
 
+void SuperPeer::setSuperPeers (){
+  const char *spList = par("superPeers").stringValue();
+  superPeers = cStringTokenizer(spList).asIntVector();
+
+}

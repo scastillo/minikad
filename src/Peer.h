@@ -24,6 +24,7 @@
 #include <vector>
 #include <cstringtokenizer.h>
 #include "kinds.h"
+#include <sstream>
 
 using namespace std;
 

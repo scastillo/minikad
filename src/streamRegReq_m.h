@@ -23,6 +23,7 @@
  *     int dest;
  *     int source;
  *     int extra;
+ *     bool fromSP;
  * }
  * </pre>
  */
@@ -33,6 +34,7 @@ class StreamRegReq : public ::cPacket
     int dest_var;
     int source_var;
     int extra_var;
+    bool fromSP_var;
 
     // protected and unimplemented operator==(), to prevent accidental usage
     bool operator==(const StreamRegReq&);
@@ -55,6 +57,8 @@ class StreamRegReq : public ::cPacket
     virtual void setSource(int source_var);
     virtual int getExtra() const;
     virtual void setExtra(int extra_var);
+    virtual bool getFromSP() const;
+    virtual void setFromSP(bool fromSP_var);
 };
 
 inline void doPacking(cCommBuffer *b, StreamRegReq& obj) {obj.parsimPack(b);}

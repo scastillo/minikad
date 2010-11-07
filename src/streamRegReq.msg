@@ -21,4 +21,5 @@ packet StreamRegReq {
     int dest;
     int source;
     int extra;
+    bool fromSP;
 }

@@ -4,6 +4,9 @@ import Cloud;
 
 network Minikad
 {
+    parameters:
+
+
     types:
         channel Channel extends ned.DelayChannel
         {
@@ -14,13 +17,16 @@ network Minikad
         cloud: Cloud;
         sp1: SuperPeer{
                 id = 1;
+                superPeers = "1 2 3";
 
         };
         sp2: SuperPeer{
               id = 2;
+              superPeers = "1 2 3";
         };
         sp3: SuperPeer{
           id = 3;
+          superPeers = "1 2 3";
         };
        peer1: Peer{
           id = 1;
@@ -38,6 +44,7 @@ network Minikad
                 id = 3;
                 superPeers = "1 2 3";
 		flujo_brindado = 1;
+                flujo_requerido = 2;
         };
         peer4: Peer{
           id = 4;

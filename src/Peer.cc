@@ -143,19 +143,29 @@ void Peer::streamVideo(cMessage *message){
     reduceLoad(stream, 1);
   }else{
   //   //sino quiere decir que tengo que retransmitir un video.
-    bubble("retransmitiendo");
+    stringstream ss ;
+    ss << "Comienza a retransmitirle a " << dest << " el stream" << stream;
+    bubble(ss.str().c_str());
     retransmissionList[stream].push_back(dest);
   }
 }
 void Peer::receiveVideo(cMessage *message){
-  bubble("Recibio video Buum!!!");
   int id = par("id");
   StreamRegReq *msgRegReq = check_and_cast<StreamRegReq *>(message);
   int stream = msgRegReq -> getStream();
+
+  stringstream ss ;
+  ss << "Recibio video " << stream;
+  bubble(ss.str().c_str());
+
   int childs = retransmissionList[stream].size();
   if ( childs  > 0){
     int k = 1;
     for( vector<int>::iterator it = retransmissionList[stream].begin(); it != retransmissionList[stream].end(); it++ ){
+      stringstream ss ;
+      int val = (*it) ;
+      ss << "Retransmitiendo video  " << stream << " a peer " << val;
+      bubble(ss.str().c_str());
       StreamRegReq *copy = msgRegReq->dup();
       copy -> setDest(*it);
       copy -> setSource(id);
@@ -189,10 +199,17 @@ void Peer::reduceLoad(int stream, int childs){
   msg -> setSource(id);
   msg -> setStream(stream);
   msg -> setExtra(childs);
+  msg -> setFromSP(false);
   sendDelayed(msg,5010,"gate$o");
 }
 void Peer::requestStream(int provider, int stream){
   int id = par("id");
+
+  stringstream ss ;
+  ss << "Solicitando stream " << stream << " a peer " << provider;
+  bubble(ss.str().c_str());
+  EV << id << " solicita stream " << stream << " a peer " << provider;
+
   StreamRegReq *msg = new StreamRegReq("streamRequest",STREAM_TRANSFER_REQUEST);
   msg -> setDest(provider);
   msg -> setSource(id);

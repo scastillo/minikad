@@ -24,6 +24,7 @@
 #include <map>
 #include <vector>
 #include <sstream>
+#include <cstringtokenizer.h>
 
 using namespace std;
 
@@ -46,8 +47,11 @@ public:
   void kickProvider(cMessage *message);
   void reduceLoad(cMessage *message);
   void increaseLoad(cMessage *message);
+  void setSuperPeers ();
   StreamProvidersMap streamProviders;
   PeersLoadMap peerLoad;
+
+  vector <int> superPeers;
 };
 
 #endif /* SUPERPEER_H_ */
