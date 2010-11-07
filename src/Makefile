@@ -31,6 +31,7 @@ O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 OBJS = \
     $O/Peer.o \
     $O/SuperPeer.o \
+    $O/test_map.o \
     $O/Cloud.o \
     $O/streamRegReq_m.o \
     $O/peerRegister_m.o \
@@ -130,6 +131,7 @@ $O/Cloud.o: Cloud.cc \
 	kinds.h \
 	streamRegReq_m.h \
 	peerRegister_m.h
+$O/test_map.o: test_map.cc
 $O/streamRegReq_m.o: streamRegReq_m.cc \
 	streamRegReq_m.h
 $O/peerRegister_m.o: peerRegister_m.cc \
