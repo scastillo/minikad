@@ -140,7 +140,7 @@ void Peer::streamVideo(cMessage *message){
     msg -> setSource(id);
     msg -> setStream(stream);
     sendDelayed(msg,5000,"gate$o");
-    // reduceLoad(stream, 1);
+    reduceLoad(stream, 1);
   }else{
   //   //sino quiere decir que tengo que retransmitir un video.
     bubble("retransmitiendo");
@@ -152,20 +152,22 @@ void Peer::receiveVideo(cMessage *message){
   int id = par("id");
   StreamRegReq *msgRegReq = check_and_cast<StreamRegReq *>(message);
   int stream = msgRegReq -> getStream();
-  if (retransmissionList[stream].size() > 0){
+  int childs = retransmissionList[stream].size();
+  if ( childs  > 0){
     int k = 1;
     for( vector<int>::iterator it = retransmissionList[stream].begin(); it != retransmissionList[stream].end(); it++ ){
       StreamRegReq *copy = msgRegReq->dup();
       copy -> setDest(*it);
       copy -> setSource(id);
-      send(copy,"gate$o");
+      sendDelayed(copy,1000,"gate$o");
       k++;
     }
   }
   if ((message -> getKind()) == END_VIDEO ){
-    int childs = retransmissionList.size();
     kickProvider(stream);
-    reduceLoad(stream, childs);
+    if (childs > 0 ){
+      reduceLoad(stream, childs);
+    }
   }
 }
 void Peer::kickProvider(int stream){

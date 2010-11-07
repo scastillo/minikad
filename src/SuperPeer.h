@@ -45,6 +45,7 @@ public:
   void streamRequestHandler(cMessage *message);
   void kickProvider(cMessage *message);
   void reduceLoad(cMessage *message);
+  void increaseLoad(cMessage *message);
   StreamProvidersMap streamProviders;
   PeersLoadMap peerLoad;
 };

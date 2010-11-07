@@ -3,15 +3,15 @@
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+//
 
 #include "SuperPeer.h"
 Define_Module(SuperPeer);
@@ -75,8 +75,8 @@ void SuperPeer::streamRequestHandler(cMessage *message){
    response -> setDest(source);
    response -> setStream(stream);
 
-    peerLoad[provider] ++;
-    streamProviders[stream].push_back(source);
+   peerLoad[provider] ++;
+   streamProviders[stream].push_back(source);
     stringstream ss ;
     ss << "carga en el provedor " << provider << " es " << peerLoad[provider];
     EV << "\n\n\n carga en el provedor " << provider << " es " << peerLoad[provider] << "\n\n\n\n";
@@ -88,14 +88,14 @@ void SuperPeer::kickProvider(cMessage *message){
   StreamRegReq *msg = check_and_cast<StreamRegReq *>(message);
   int peer_to_kick = msg -> getSource();
   int stream = msg -> getStream();
-  
+
   EV << "Kicking peer: " << peer_to_kick << "\n\n";
   EV << "streamProviders[" << stream << "] = [";
   for( vector<int>::iterator it = streamProviders[stream].begin(); it != streamProviders[stream].end(); it++ ){
     EV << "" << *it << ",";
   }
   EV << "]\n\n\n";
-  
+
   for( vector<int>::iterator it = streamProviders[stream].begin(); it != streamProviders[stream].end(); it++ ){
     int provider = *it;
     vector<int>::iterator provider_index = it;
@@ -115,7 +115,21 @@ void SuperPeer::kickProvider(cMessage *message){
   }
   EV << "]\n\n\n";
 }
-void SuperPeer::reduceLoad(cMessage *message){}
+void SuperPeer::reduceLoad(cMessage *message){
+  StreamRegReq *msg = check_and_cast<StreamRegReq *>(message);
+  int peer = msg -> getSource();
+  int by   = msg -> getExtra();
+  EV << "\n\nLoad for peer: " << peer  << " : " << peerLoad[peer] << "  reducing by: " << by;
+  peerLoad[peer] -= by;
+  EV << "\n\nNew Load for peer: " << peer  << " : " << peerLoad[peer] << " \n" ;
+  if (peerLoad[peer] < 0 ){
+    peerLoad[peer] = 0;
+  }
+}
+
+void SuperPeer::increaseLoad(cMessage *message){
+
+}
 
 void SuperPeer::initialize(int stage){
   if (stage == 0){
