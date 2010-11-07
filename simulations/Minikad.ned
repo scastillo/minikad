@@ -43,6 +43,7 @@ network Minikad
           id = 4;
           superPeers = "1 2 3";
           flujo_requerido = 1;
+          retardo_flujo = 1000;
         };
 
     connections:

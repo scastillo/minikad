@@ -22,6 +22,8 @@ simple Peer
       int flujo_brindado= default(0);
       // requiere flujo con id.
       int flujo_requerido = default(0);
+      int retardo_flujo = default(0);
+      @display("i=device/pc");
     gates:
         inout gate;
 }

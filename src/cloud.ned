@@ -20,6 +20,7 @@ simple Cloud
 {
   parameters:
     int numberOfNodes = default(0);
+      @display("i=misc/cloud");    
   gates:
      inout gate[];
 }

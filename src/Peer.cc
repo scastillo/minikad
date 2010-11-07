@@ -64,7 +64,7 @@ void Peer::initialize(int stage){
       msg -> setDest(dest);
       msg -> setSource(id);
       msg -> setStream(stream_req);
-      send(msg,"gate$o");
+      sendDelayed(msg,par("retardo_flujo"),"gate$o");
     }
   }else if(stage == 3){
     // cMessage *msg = new cMessage("testPacketx",TEST);
@@ -141,12 +141,11 @@ void Peer::streamVideo(cMessage *message){
     msg -> setStream(stream);
     sendDelayed(msg,5000,"gate$o");
     // reduceLoad(stream, 1);
-  }// else{
+  }else{
   //   //sino quiere decir que tengo que retransmitir un video.
-  //   bubble("retransmitiendo");
-  //   retransmissionList[stream].push_back(dest);
-
-  // }
+    bubble("retransmitiendo");
+    retransmissionList[stream].push_back(dest);
+  }
 }
 void Peer::receiveVideo(cMessage *message){
   bubble("Recibio video Buum!!!");
@@ -157,9 +156,9 @@ void Peer::receiveVideo(cMessage *message){
     int k = 1;
     for( vector<int>::iterator it = retransmissionList[stream].begin(); it != retransmissionList[stream].end(); it++ ){
       StreamRegReq *copy = msgRegReq->dup();
-      copy -> setDest(id);
-      copy -> setSource(*it);
-      sendDelayed(copy,500*k, "gate$o");
+      copy -> setDest(*it);
+      copy -> setSource(id);
+      send(copy,"gate$o");
       k++;
     }
   }

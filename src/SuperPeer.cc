@@ -54,11 +54,14 @@ int SuperPeer::selectBestProvider(int stream){
   int minor_load = peerLoad[best_provider];
   for( vector<int>::iterator it = providers.begin(); it != providers.end(); it++ ){
     int load = peerLoad[*it];
+    EV << " \nProvider " << *it << "  Load: " << load << " \n ";
     if ( load < minor_load ){
       best_provider = *it;
       minor_load = load;
     }
+
   }
+  EV << "\n\n\n\n Best provider " << best_provider << " \n\n\n\n";
   return best_provider;
 }
 void SuperPeer::streamRequestHandler(cMessage *message){
@@ -70,10 +73,14 @@ void SuperPeer::streamRequestHandler(cMessage *message){
     StreamResponse *response = new StreamResponse("streamResponse",STREAM_RESPONSE);
    response -> setProvider(provider);
    response -> setDest(source);
-   response -> setStream(source);
+   response -> setStream(stream);
 
     peerLoad[provider] ++;
-
+    streamProviders[stream].push_back(source);
+    stringstream ss ;
+    ss << "carga en el provedor " << provider << " es " << peerLoad[provider];
+    EV << "\n\n\n carga en el provedor " << provider << " es " << peerLoad[provider] << "\n\n\n\n";
+    bubble(ss.str().c_str());
     send(response, "gate$o");
   }
 }
