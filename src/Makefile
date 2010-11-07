@@ -24,22 +24,22 @@ LIBS =
 
 # Output directory
 PROJECT_OUTPUT_DIR = ../out
-PROJECTRELATIVE_PATH = /src
+PROJECTRELATIVE_PATH = src
 O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 
 # Object files for local .cc and .msg files
 OBJS = \
-    $O/Cloud.o \
     $O/Peer.o \
     $O/SuperPeer.o \
-    $O/peerRegister_m.o \
+    $O/Cloud.o \
     $O/streamRegReq_m.o \
+    $O/peerRegister_m.o \
     $O/streamResponse_m.o
 
 # Message files
 MSGFILES = \
-    peerRegister.msg \
     streamRegReq.msg \
+    peerRegister.msg \
     streamResponse.msg
 
 #------------------------------------------------------------------------------
@@ -110,27 +110,28 @@ depend:
 	$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES)  ./*.cc
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
-$O/Cloud.o: Cloud.cc \
-  ./kinds.h \
-  ./Cloud.h \
-  ./streamRegReq_m.h \
-  ./peerRegister_m.h \
-  ./streamResponse_m.h
-$O/Peer.o: Peer.cc \
-  ./kinds.h \
-  ./streamRegReq_m.h \
-  ./peerRegister_m.h \
-  ./Peer.h \
-  ./streamResponse_m.h
 $O/SuperPeer.o: SuperPeer.cc \
-  ./kinds.h \
-  ./streamRegReq_m.h \
-  ./peerRegister_m.h \
-  ./SuperPeer.h \
-  ./streamResponse_m.h
-$O/peerRegister_m.o: peerRegister_m.cc \
-  ./peerRegister_m.h
-$O/streamRegReq_m.o: streamRegReq_m.cc \
-  ./streamRegReq_m.h
+	streamResponse_m.h \
+	kinds.h \
+	SuperPeer.h \
+	streamRegReq_m.h \
+	peerRegister_m.h
+$O/Peer.o: Peer.cc \
+	streamResponse_m.h \
+	kinds.h \
+	streamRegReq_m.h \
+	Peer.h \
+	peerRegister_m.h
 $O/streamResponse_m.o: streamResponse_m.cc \
-  ./streamResponse_m.h
+	streamResponse_m.h
+$O/Cloud.o: Cloud.cc \
+	Cloud.h \
+	streamResponse_m.h \
+	kinds.h \
+	streamRegReq_m.h \
+	peerRegister_m.h
+$O/streamRegReq_m.o: streamRegReq_m.cc \
+	streamRegReq_m.h
+$O/peerRegister_m.o: peerRegister_m.cc \
+	peerRegister_m.h
+
