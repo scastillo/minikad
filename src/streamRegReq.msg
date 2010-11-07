@@ -20,4 +20,5 @@ packet StreamRegReq {
     int stream;
     int dest;
     int source;
+    int extra;
 }

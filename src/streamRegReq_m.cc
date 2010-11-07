@@ -37,6 +37,7 @@ StreamRegReq::StreamRegReq(const char *name, int kind) : cPacket(name,kind)
     this->stream_var = 0;
     this->dest_var = 0;
     this->source_var = 0;
+    this->extra_var = 0;
 }
 
 StreamRegReq::StreamRegReq(const StreamRegReq& other) : cPacket()
@@ -56,6 +57,7 @@ StreamRegReq& StreamRegReq::operator=(const StreamRegReq& other)
     this->stream_var = other.stream_var;
     this->dest_var = other.dest_var;
     this->source_var = other.source_var;
+    this->extra_var = other.extra_var;
     return *this;
 }
 
@@ -65,6 +67,7 @@ void StreamRegReq::parsimPack(cCommBuffer *b)
     doPacking(b,this->stream_var);
     doPacking(b,this->dest_var);
     doPacking(b,this->source_var);
+    doPacking(b,this->extra_var);
 }
 
 void StreamRegReq::parsimUnpack(cCommBuffer *b)
@@ -73,6 +76,7 @@ void StreamRegReq::parsimUnpack(cCommBuffer *b)
     doUnpacking(b,this->stream_var);
     doUnpacking(b,this->dest_var);
     doUnpacking(b,this->source_var);
+    doUnpacking(b,this->extra_var);
 }
 
 int StreamRegReq::getStream() const
@@ -103,6 +107,16 @@ int StreamRegReq::getSource() const
 void StreamRegReq::setSource(int source_var)
 {
     this->source_var = source_var;
+}
+
+int StreamRegReq::getExtra() const
+{
+    return extra_var;
+}
+
+void StreamRegReq::setExtra(int extra_var)
+{
+    this->extra_var = extra_var;
 }
 
 class StreamRegReqDescriptor : public cClassDescriptor
@@ -152,7 +166,7 @@ const char *StreamRegReqDescriptor::getProperty(const char *propertyname) const
 int StreamRegReqDescriptor::getFieldCount(void *object) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount(object) : 3;
+    return basedesc ? 4+basedesc->getFieldCount(object) : 4;
 }
 
 unsigned int StreamRegReqDescriptor::getFieldTypeFlags(void *object, int field) const
@@ -167,8 +181,9 @@ unsigned int StreamRegReqDescriptor::getFieldTypeFlags(void *object, int field) 
         FD_ISEDITABLE,
         FD_ISEDITABLE,
         FD_ISEDITABLE,
+        FD_ISEDITABLE,
     };
-    return (field>=0 && field<3) ? fieldTypeFlags[field] : 0;
+    return (field>=0 && field<4) ? fieldTypeFlags[field] : 0;
 }
 
 const char *StreamRegReqDescriptor::getFieldName(void *object, int field) const
@@ -183,8 +198,9 @@ const char *StreamRegReqDescriptor::getFieldName(void *object, int field) const
         "stream",
         "dest",
         "source",
+        "extra",
     };
-    return (field>=0 && field<3) ? fieldNames[field] : NULL;
+    return (field>=0 && field<4) ? fieldNames[field] : NULL;
 }
 
 int StreamRegReqDescriptor::findField(void *object, const char *fieldName) const
@@ -194,6 +210,7 @@ int StreamRegReqDescriptor::findField(void *object, const char *fieldName) const
     if (fieldName[0]=='s' && strcmp(fieldName, "stream")==0) return base+0;
     if (fieldName[0]=='d' && strcmp(fieldName, "dest")==0) return base+1;
     if (fieldName[0]=='s' && strcmp(fieldName, "source")==0) return base+2;
+    if (fieldName[0]=='e' && strcmp(fieldName, "extra")==0) return base+3;
     return basedesc ? basedesc->findField(object, fieldName) : -1;
 }
 
@@ -209,8 +226,9 @@ const char *StreamRegReqDescriptor::getFieldTypeString(void *object, int field) 
         "int",
         "int",
         "int",
+        "int",
     };
-    return (field>=0 && field<3) ? fieldTypeStrings[field] : NULL;
+    return (field>=0 && field<4) ? fieldTypeStrings[field] : NULL;
 }
 
 const char *StreamRegReqDescriptor::getFieldProperty(void *object, int field, const char *propertyname) const
@@ -253,6 +271,7 @@ std::string StreamRegReqDescriptor::getFieldAsString(void *object, int field, in
         case 0: return long2string(pp->getStream());
         case 1: return long2string(pp->getDest());
         case 2: return long2string(pp->getSource());
+        case 3: return long2string(pp->getExtra());
         default: return "";
     }
 }
@@ -270,6 +289,7 @@ bool StreamRegReqDescriptor::setFieldAsString(void *object, int field, int i, co
         case 0: pp->setStream(string2long(value)); return true;
         case 1: pp->setDest(string2long(value)); return true;
         case 2: pp->setSource(string2long(value)); return true;
+        case 3: pp->setExtra(string2long(value)); return true;
         default: return false;
     }
 }
@@ -286,8 +306,9 @@ const char *StreamRegReqDescriptor::getFieldStructName(void *object, int field) 
         NULL,
         NULL,
         NULL,
+        NULL,
     };
-    return (field>=0 && field<3) ? fieldStructNames[field] : NULL;
+    return (field>=0 && field<4) ? fieldStructNames[field] : NULL;
 }
 
 void *StreamRegReqDescriptor::getFieldStructPointer(void *object, int field, int i) const

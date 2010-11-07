@@ -59,6 +59,7 @@ int SuperPeer::selectBestProvider(int stream){
       minor_load = load;
     }
   }
+  return best_provider;
 }
 void SuperPeer::streamRequestHandler(cMessage *message){
   StreamRegReq *msg = check_and_cast<StreamRegReq *>(message);
@@ -66,11 +67,14 @@ void SuperPeer::streamRequestHandler(cMessage *message){
   int stream = msg -> getStream();
   int provider = selectBestProvider(stream);
   if (provider >0 ){
-    StreamResponse* msg = new StreamResponse("streamResponse",STREAM_RESPONSE);
-    msg -> setProvider(provider);
-    msg -> setDest(source);
-    msg -> setStream(source);
-    send(msg, "gate$o");
+    StreamResponse *response = new StreamResponse("streamResponse",STREAM_RESPONSE);
+   response -> setProvider(provider);
+   response -> setDest(source);
+   response -> setStream(source);
+
+    peerLoad[provider] ++;
+
+    send(response, "gate$o");
   }
 }
 void SuperPeer::kickProvider(cMessage *message){}
@@ -97,6 +101,12 @@ void SuperPeer::handleMessage(cMessage *msg){
   }else if( messageType == STREAM_REQUEST ){
     bubble("Alguien requirio flujo");
     streamRequestHandler(msg);
+  }else if( messageType == KICK_PEER){
+    bubble("kickPeer !!!");
+    kickProvider(msg);
+  }else if( messageType == REDUCE_LOAD){
+    bubble("reduce load  !!!!");
+    reduceLoad(msg);
   }
 }
 

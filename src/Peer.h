@@ -31,22 +31,26 @@ const int TYPE=2;
 
 class Peer : public cSimpleModule {
 public:
-	Peer();
-	virtual ~Peer();
-        virtual void initialize(int stage);
-        virtual int numInitStages() const;
-	virtual void handleMessage(cMessage *message);
-        void streamVideo(cMessage *message);
-        void receiveVideo(cMessage *message);
-        void handleStreamResponse(cMessage *message);
-        void setSuperPeers();
-        int count;
-        vector <int> superPeers;
+  map <int, vector <int>  > retransmissionList;
+
+  Peer();
+  virtual ~Peer();
+  virtual void initialize(int stage);
+  virtual int numInitStages() const;
+  virtual void handleMessage(cMessage *message);
+  void streamVideo(cMessage *msg);
+  void receiveVideo(cMessage *message);
+  void handleStreamResponse(cMessage *message);
+  void requestStream(int peerId, int stream);
+  void setSuperPeers();
+  int count;
+  vector <int> superPeers;
+
 
  private:
-	int getNearestSuperPeer(int id);
-        void kickProvider(int stream);
-        void reduceLoad(int stream);
+  int getNearestSuperPeer(int id);
+  void kickProvider(int stream);
+  void reduceLoad(int stream, int childs);
 };
 
 #endif /* PEER_H_ */

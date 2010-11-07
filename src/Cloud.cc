@@ -43,7 +43,6 @@ void Cloud::handleMessage(cMessage *msg){
   short messageType = msg -> getKind();
 
   if (messageType == PEER_REGISTER ){
-
     PeerRegister *peerInfo = check_and_cast<PeerRegister *>(msg);
     int ip = (peerInfo -> getArrivalGate()) -> getIndex();
     int id = peerInfo -> getId();
@@ -54,18 +53,20 @@ void Cloud::handleMessage(cMessage *msg){
       peers[id] = ip ;
     }
 
-  }else if(messageType == STREAM_REGISTER || messageType == STREAM_REQUEST ){
-
+  }else if(messageType == STREAM_REGISTER || messageType == STREAM_REQUEST || messageType == KICK_PEER || messageType == REDUCE_LOAD  ){
     StreamRegReq *msgRegReq = check_and_cast<StreamRegReq *>(msg);
     int dest = msgRegReq -> getDest();
     EV << "\n\n\n\n destino cloud: "<< dest <<"  \n\n\n\n";
     int ip = superPeerResolver(dest);
     send(msgRegReq,"gate$o",ip);
 
-  }else if(messageType == VIDEO ){
-    bubble("Video Arrived!!!");
-  }else if(messageType == END_VIDEO ){
-    bubble("End VIDEO!!!");
+  }else if(messageType == VIDEO || messageType == END_VIDEO ){
+    StreamRegReq *msgRegReq = check_and_cast<StreamRegReq *>(msg);
+    int dest = msgRegReq -> getDest();
+    EV << "\n\n\n\n Enviando videoinfo a :  "<< dest <<"  \n\n\n\n";
+    bubble("Enviando videoinfo a Peer!!!");
+    int ip = peerResolver(dest);
+    send(msgRegReq,"gate$o",ip);
   }else if(messageType == STREAM_RESPONSE ){
     bubble("StreamResponse!!!!!");
     StreamResponse *response = check_and_cast<StreamResponse *>(msg);
@@ -74,7 +75,12 @@ void Cloud::handleMessage(cMessage *msg){
     int ip = peerResolver(dest);
     EV << "\n\n\n\n\n STREAM_RESPONSE con destion " << dest << " Y flujo " << stream <<" \n\n\n\n\n" ;
     send(response,"gate$o",ip);
-  }else if(messageType == TEST ){
-    bubble("No deberia haber llegado video arrived todavia!!!");
+  }else if (messageType == STREAM_TRANSFER_REQUEST){
+    bubble("StreamRequestToPeer!!!!!");
+    StreamRegReq *msgRegReq = check_and_cast<StreamRegReq *>(msg);
+    int dest = msgRegReq -> getDest();
+    EV << "\n\n\n\n Requiriendo stream a peer:  "<< dest <<"  \n\n\n\n";
+    int ip = peerResolver(dest);
+    send(msgRegReq,"gate$o",ip);
   }
 }

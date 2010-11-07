@@ -26,7 +26,7 @@ network Minikad
           id = 1;
           superPeers = "1 2 3";
           flujo_brindado = 3;
-          flujo_requerido = 2;
+          flujo_requerido = 1;
         };
        peer2: Peer{
           id = 2;

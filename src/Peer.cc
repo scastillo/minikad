@@ -75,12 +75,25 @@ void Peer::initialize(int stage){
 void Peer::handleStreamResponse(cMessage *msg){
   EV << "\n\n\n\n\n llego al stream response \n\n\n\n\n\n\n";
   bubble("handle stream response !!!");
+  StreamResponse *response = check_and_cast<StreamResponse *>(msg);
+  int stream = response -> getStream();
+  int provider = response -> getProvider();
+  requestStream(provider, stream);
 }
 void Peer::handleMessage(cMessage *msg){
   short messageType = msg -> getKind();
   switch(messageType){
     case STREAM_RESPONSE:
       handleStreamResponse(msg);
+      break;
+    case STREAM_TRANSFER_REQUEST:
+      streamVideo(msg);
+      break;
+    case VIDEO:
+      receiveVideo(msg);
+      break;
+    case END_VIDEO:
+      receiveVideo(msg);
       break;
     default: bubble("No se reconocio un mensaje");
       break;
@@ -106,42 +119,82 @@ int Peer::getNearestSuperPeer(int id){
   return nearest_sp;
 }
 
-  // if (msgType == 2 ){ // InitConfigType
-
-  //   // InitConfig *config = check_and_cast<InitConfig *>(msg);
-  //   // int size = config -> getSpIdsArraySize();
-  //   // EV << "\n\n\n\n InitConfig Arrived!  " << size <<" \n\n\n\n";
-  //   // for(int k=0; k < size ; k++ ){
-  //   //   int id = config -> getSpIds(k);
-  //   //   superPeers.push_back(id);
-  //   //   bubble("pushed");
-  //   // }
-
-  //   // for( vector<int>::iterator it = superPeers.begin(); it != superPeers.end(); it++ ){
-  //   //   EV << " \n\n\n\n\nID en peer " <<  *it << "  \n\n\n\n\n ";
-  //   // }
-  // }
-
-
 //sendStream
 // message for stream handling
 void Peer::streamVideo(cMessage *message){
   int id = par("id");
-  int stream  = 2;
-  int dest = 1;
-  for (int i = 0; i < 8 ; i++ ){
-    StreamRegReq *msg = new StreamRegReq("streamReq",VIDEO);
+  int my_stream = par("flujo_brindado");
+  StreamRegReq *msgRegReq = check_and_cast<StreamRegReq *>(message);
+  int dest = msgRegReq -> getSource();
+  int stream = msgRegReq -> getStream();
+  if (stream == my_stream){
+    for (int i = 0; i < 8 ; i++ ){
+      StreamRegReq *msg = new StreamRegReq("streamReq",VIDEO);
+      msg -> setDest(dest);
+      msg -> setSource(id);
+      msg -> setStream(stream);
+      sendDelayed(msg,500 * (i+1),"gate$o");
+    }
+    StreamRegReq *msg = new StreamRegReq("streamFinish",END_VIDEO);
     msg -> setDest(dest);
     msg -> setSource(id);
     msg -> setStream(stream);
-    sendDelayed(msg,500 * (i+1),"gate$o");
+    sendDelayed(msg,5000,"gate$o");
+    // reduceLoad(stream, 1);
+  }// else{
+  //   //sino quiere decir que tengo que retransmitir un video.
+  //   bubble("retransmitiendo");
+  //   retransmissionList[stream].push_back(dest);
+
+  // }
+}
+void Peer::receiveVideo(cMessage *message){
+  bubble("Recibio video Buum!!!");
+  int id = par("id");
+  StreamRegReq *msgRegReq = check_and_cast<StreamRegReq *>(message);
+  int stream = msgRegReq -> getStream();
+  if (retransmissionList[stream].size() > 0){
+    int k = 1;
+    for( vector<int>::iterator it = retransmissionList[stream].begin(); it != retransmissionList[stream].end(); it++ ){
+      StreamRegReq *copy = msgRegReq->dup();
+      copy -> setDest(id);
+      copy -> setSource(*it);
+      sendDelayed(copy,500*k, "gate$o");
+      k++;
+    }
   }
-  StreamRegReq *msg = new StreamRegReq("streamFinish",END_VIDEO);
+  if ((message -> getKind()) == END_VIDEO ){
+    int childs = retransmissionList.size();
+    kickProvider(stream);
+    reduceLoad(stream, childs);
+  }
+}
+void Peer::kickProvider(int stream){
+  int id = par("id");
+  retransmissionList.erase(stream);
+  StreamRegReq *msg = new StreamRegReq("kickingPeer",KICK_PEER);
+  int dest = getNearestSuperPeer(stream);
   msg -> setDest(dest);
   msg -> setSource(id);
   msg -> setStream(stream);
-  sendDelayed(msg,5000,"gate$o");
+  sendDelayed(msg,5010,"gate$o");
 }
-void Peer::receiveVideo(cMessage *message){}
-void Peer::kickProvider(int stream){}
-void Peer::reduceLoad(int stream){}
+
+void Peer::reduceLoad(int stream, int childs){
+  int id = par("id");
+  StreamRegReq *msg = new StreamRegReq("reducingLoad",REDUCE_LOAD);
+  int dest = getNearestSuperPeer(stream);
+  msg -> setDest(dest);
+  msg -> setSource(id);
+  msg -> setStream(stream);
+  msg -> setExtra(childs);
+  sendDelayed(msg,5010,"gate$o");
+}
+void Peer::requestStream(int provider, int stream){
+  int id = par("id");
+  StreamRegReq *msg = new StreamRegReq("streamRequest",STREAM_TRANSFER_REQUEST);
+  msg -> setDest(provider);
+  msg -> setSource(id);
+  msg -> setStream(stream);
+  send(msg,"gate$o");
+}
