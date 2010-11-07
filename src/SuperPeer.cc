@@ -161,6 +161,10 @@ void SuperPeer::increaseLoad(cMessage *message){
   ss << "Incrementando el proveedor " << peer << " en " << by;
   bubble(ss.str().c_str());
   EV << "\n\nLoad for peer: " << peer  << " : " << peerLoad[peer] << "  increasing by: " << by;
+  PeersLoadMap::iterator val = peerLoad.find(peer);
+  if ( val == peerLoad.end() ){
+    peerLoad[peer] = 0;
+  }
   peerLoad[peer] += by ;
   EV << "\n\nNew Load for peer: " << peer  << " : " << peerLoad[peer] << " \n" ;
 }
