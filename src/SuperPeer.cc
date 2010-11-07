@@ -100,16 +100,20 @@ void SuperPeer::kickProvider(cMessage *message){
     int provider = *it;
     vector<int>::iterator provider_index = it;
     if(provider == peer_to_kick){
-      if(peer_to_kick != 4){ // En este es que se caga por eso lo comente.. mira en los logs como queda todo y no hay nada raro es solo que el 4 esta de ultimo en el vector..m..
-	streamProviders[stream].erase(provider_index);
-      }
+      EV << "\n\n ** Ready to kick!... provider: " << provider << ", in index " << *(provider_index) << "\n\n\n\n";
+      streamProviders[stream].erase(provider_index);
       EV << "\n\n ** Oh yeah!... provider: " << provider << ", kicked from provider of stream " << stream << "\n\n\n\n";
       break; // Con este break dejamos de seguir recorriendo el hp arreglo si es que ya encontramos al que era.
     }else{
       EV << "provider =" << provider << ". oh you luck boy...Not kicking you." << "\n\n\n";
     }
   }
-  
+
+  EV << "streamProviders[" << stream << "] = [";
+  for( vector<int>::iterator it = streamProviders[stream].begin(); it != streamProviders[stream].end(); it++ ){
+    EV << "" << *it << ",";
+  }
+  EV << "]\n\n\n";
 }
 void SuperPeer::reduceLoad(cMessage *message){}
 

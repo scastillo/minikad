@@ -1,4 +1,0 @@
-# Partial Tkenv config file -- see $HOME/.tkenvrc as well
-inspector "Minikad" "Minikad" "2" "607x342+0+40:normal"
-inspector "Minikad.sp3.streamReg.streamRequest" "StreamRegReq" "1" "460x315+2+86:normal"
-
