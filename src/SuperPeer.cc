@@ -205,5 +205,4 @@ void SuperPeer::handleMessage(cMessage *msg){
 void SuperPeer::setSuperPeers (){
   const char *spList = par("superPeers").stringValue();
   superPeers = cStringTokenizer(spList).asIntVector();
-
 }
