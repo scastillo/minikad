@@ -1,4 +1,24 @@
-Minimal implementation of an overlay network with DHT backend for video streaming simulations using OMNET++ and OverSim
+Minimal implementation of an overlay network with DHT backend for video streaming simulations using OMNET++ and OverSim.
+
+Usage:
+
+To run Minikad you need to have installed the omnnet IDE.
+
+After installing the IDE follow the next steps:
+ 1. File - Import
+ 2. General - Existing Projects into Workspace ( It should looks like
+    this : http://cl.ly/431e885adaefab72925b )
+ 3. Search  minikad when you downloaded it, and select it.
+ 4. Once open, you can start to edit the Minikad.ned file in the
+    simulations folder.
+ 5. An example configuration file is included, it has 3 superpeers,
+    and 4 peers, in that example the peers with the property
+    "flujo_brindado" are peers which have an stream and its respective
+    id, the ones with "flujo_requerido" are peers which require one of
+    the available streams in the network.
+ 6. Once you have configured your desired network, you press play and
+    the simulation will start.
+
 
 Sebastian Castillo
 Juan Broz
